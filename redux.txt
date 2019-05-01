@@ -1,0 +1,72 @@
+1)Redux is independent framework used for State Management.
+
+2)Redux is a huge javascript object which stores all the store
+
+3)We should create a store with reducer as shown in the example
+
+4)The cycle goes like this >
+-   Components requests for a state change and dispatches an action >
+-   The Dispatcher holds the action which tells the Reducer what should be done to the state
+-   The Reducer inturn picks from the Dispatcher and then modifies the state in the Global store
+
+5) The state shouldnot be modified as it is supposed to be immutable
+
+6)Subscription comes to picture whenever the component dispatches the action which would make reducer to mutate the store.
+The subscription will automatically be called whenever the action is dispatched.
+
+7)Middleware comes between the Action and the Reducer where if you want to process the action or atleast log the action before it reaches the Reducer.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+Uni Directional Flow vs 2 way Data Binding
+
+1)In Angular the 2 way binding from model > view and view > model happens automatically without our control
+In React the uni directional flow happens where the model > view happens but view > model can be in our control.
+
+In Angular you have many controllers. One example would be a user triggering an action on View 1 that is managed by Controller 1. Controller 1 does something but also fires an event that is caught by another Controller 2. Controller 2 updates some property on the $scope and View 2 is suddenly changed.
+
+Suddenly an operation on View 1, updated View 2. If we now throw in some Async callbacks and a bit more event chains, you might no longer know exactly when/how your views are being updated.
+
+With Flux/Redux, you have a one way data flow. The view never updates the model, the views can only dispatch an action (intention to update), but lets the store/reducer deciding how to handle the update. You can more easily reason about the data flow because you can easily see which actions can be fired by each view. Then follow up to see how that action is being handled by the store and you can know exactly what can be updated.
+--------------------------------------------------------------------------------------------------------------------------
+1) In the Angular context, the Subjects/ Event Emitters inside a Service are used in order to let the world know the change. When the application gets bigger then the problem comes where the service would get complicated and clumsy. To the rescue comes the Redux.
+
+2)Redux also solves the "extraneous props" issue. And that has got to be one of the main reasons why Redux is so popular in the React world.
+
+For example, we are passing something 5 or 10 levels up the component tree. The leaves of the tree know what to do with it, but for all the components in the middle the input feels extraneous and makes that component less reusable and more tied to the application. But that is just one example.
+
+There are situations where components are dependent on each other at completely different points in the component tree, and passing inputs 10 levels up the tree and callback functions 10 levels down the tree then 5 levels up another branch is not scalable in complexity.
+
+Another issue is, we have sibling components in the tree that are interdependent, and that represent different view for the same data on the screen, like a list of folders with unread messages, and a total unread messages counter on the page header.
+
+There are many more examples. If we only had props or @Input() as a component communication mechanism we would run into trouble very quickly. Passing only inputs to components won't scale in complexity.
+
+How Redux overcomes it?
+
+Redux store is a combination of the Command and the Observable patterns. What we do with the store is, we send it a command object known as an action:
+
+store.dispatch({
+    type: 'REFRESH_MESSAGES'
+});
+
+We dispatch an action into the store, and the store will operate on the data inside the store. But the emitter of the action does not know what the store will do with it.
+
+We could also dispatch another action from a completely different part of the application:
+
+
+store.dispatch({
+    type: 'MARK_MESSAGE_AS_READ',
+    payload: {
+        messageId: 103
+    }
+});
+
+--------------------------------------------------------------------------------------------------------------------------
+3) Assume we have multiple components who are independent of each other and using the same data.In this case there would be multiple data for each view in the reality and data wouldnt be synced up. To overcome this problem we need to write something extra inorder the data should remain same across all the views.
+
+Example: Assume you have a data like studentsInfo. You are using that information in 3 components. Each component are independent ie not parent child relationship then you can access the data studentsInfo from a service. But if you are modifying that data in one component, it wouldnt reflect in others unless you emit and other component subscribes. These are extra steps. 
+https://www.youtube.com/watch?v=UEcdQR-NoNA
+
+4)Use Redux whenever our application is medium to large in size where it has too many component communication involved in it. Refer the images folder in Redux
+
+5) The Store is the local javascript object which can also be thought like a client side database
